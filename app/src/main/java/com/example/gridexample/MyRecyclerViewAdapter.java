@@ -11,19 +11,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import static android.graphics.Color.parseColor;
+
 public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.ViewHolder> {
 
     private ArrayList<CastomNumber> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
-    // data is passed into the constructor
+    // Конструктор
     MyRecyclerViewAdapter(Context context, ArrayList<CastomNumber> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
     }
 
-    // inflates the cell layout from xml when needed
+    // Подгрузка XML
     @Override
     @NonNull
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -31,20 +33,21 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         return new ViewHolder(view);
     }
 
-    // binds the data to the TextView in each cell
+    // Создания TextView c параметрамми которые указаны в Data
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.myTextView.setText((CharSequence) mData.get(position));
+        holder.myTextView.setText( mData.get(position).a);
+        holder.myTextView.setTextColor(parseColor(mData.get(position).color.getCode()));
     }
 
-    // total number of cells
+    // Кол-во элементов
     @Override
     public int getItemCount() {
         return mData.size();
     }
 
 
-    // stores and recycles views as they are scrolled off screen
+    // Элемент отвечающий за клик на объекте
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView myTextView;
 
@@ -60,18 +63,18 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         }
     }
 
-    // convenience method for getting data at click position
+    // Получения данных при клике
     int getItem(int id) {
         CastomNumber MyItem = mData.get(id);
         return MyItem.a;
     }
 
-    // allows clicks events to be caught
+    // Событие нажатия
     void setClickListener(ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
 
-    // parent activity will implement this method to respond to click events
+    // Интерфейс для возврата обьекта
     public interface ItemClickListener {
         void onItemClick(View view, int position);
     }
